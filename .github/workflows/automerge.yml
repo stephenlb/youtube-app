@@ -1,99 +1,52 @@
-name: Auto Merge Pull Requests
+name: Auto-merge and clean up branches
 
-on:
-  pull_request:
+"on":
+  pull_request_target:
     types: [opened, synchronize, reopened]
 
 permissions:
   contents: write
   pull-requests: write
-  issues: write
 
 jobs:
-  automerge:
+  merge-and-clean:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const { owner, repo } = context.repo;
-            const number = context.payload.pull_request.number;
+      - name: Merge the pull request
+        id: merge
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr merge "${{ github.event.pull_request.number }}" \
+            --merge \
+            --repo "${{ github.repository }}"
 
-            const files = await github.rest.pulls.listFiles({
-              owner,
-              repo,
-              pull_number: number
-            });
+      - name: Note why it wasn't merged
+        if: steps.merge.outcome != 'success'
+        run: |
+          echo "PR #${{ github.event.pull_request.number }} could not be merged (conflicts, failing checks, or branch protection). Leaving it open, branch untouched."
 
-            if (files.data.some(f => f.filename.startsWith(".github/"))) {
-              await github.rest.issues.createComment({
-                owner,
-                repo,
-                issue_number: number,
-                body: "Blocked: .github changes are not allowed."
-              });
+      - name: Delete the source branch if it still exists
+        if: >-
+          steps.merge.outcome == 'success' &&
+          github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH="${{ github.event.pull_request.head.ref }}"
+          DEFAULT_BRANCH="${{ github.event.repository.default_branch }}"
+          if [ "$BRANCH" = "$DEFAULT_BRANCH" ]; then
+            echo "Branch '$BRANCH' is the default branch, refusing to delete."
+          else
+            gh api -X DELETE "repos/${{ github.repository }}/git/refs/heads/$BRANCH" \
+              && echo "Branch '$BRANCH' deleted." \
+              || echo "Branch '$BRANCH' already gone, nothing to delete."
+          fi
 
-              await github.rest.pulls.update({
-                owner,
-                repo,
-                pull_number: number,
-                state: "closed"
-              });
-
-              return;
-            }
-
-            await new Promise(r => setTimeout(r, 5000));
-
-            const pr = await github.rest.pulls.get({
-              owner,
-              repo,
-              pull_number: number
-            });
-
-            if (pr.data.mergeable === false) {
-              await github.rest.issues.createComment({
-                owner,
-                repo,
-                issue_number: number,
-                body: "Merge failed: conflicts detected."
-              });
-
-              await github.rest.pulls.update({
-                owner,
-                repo,
-                pull_number: number,
-                state: "closed"
-              });
-
-              return;
-            }
-
-            if (pr.data.mergeable !== true) {
-              core.setFailed("Merge status unavailable.");
-              return;
-            }
-
-            await github.rest.pulls.merge({
-              owner,
-              repo,
-              pull_number: number,
-              merge_method: "squash"
-            });
-
-            await github.rest.issues.createComment({
-              owner,
-              repo,
-              issue_number: number,
-              body: "Merged automatically."
-            });
-
-            const branch = context.payload.pull_request.head.ref;
-
-            await github.rest.git.deleteRef({
-              owner,
-              repo,
-              ref: `heads/${branch}`
-            });
+      - name: Note fork branch left alone
+        if: >-
+          steps.merge.outcome == 'success' &&
+          github.event.pull_request.head.repo.full_name != github.repository
+        run: |
+          echo "Merged. Head branch is in a fork, leaving it alone."
