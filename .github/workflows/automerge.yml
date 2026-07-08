@@ -2,10 +2,7 @@ name: Auto Merge Pull Requests
 
 on:
   pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: write
@@ -17,123 +14,65 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check .github changes and Auto Merge
-        uses: actions/github-script@v7
+      - uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const { owner, repo } = context.repo;
-            const pull_number = context.payload.pull_request.number;
+            const number = context.payload.pull_request.number;
 
             const files = await github.rest.pulls.listFiles({
               owner,
               repo,
-              pull_number
+              pull_number: number
             });
 
-            const blocked = files.data.some(file =>
-              file.filename.startsWith(".github/")
-            );
-
-            if (blocked) {
+            if (files.data.some(f => f.filename.startsWith(".github/"))) {
               await github.rest.issues.createComment({
                 owner,
                 repo,
-                issue_number: pull_number,
-                body: `## ❌ Blocked
-
-This pull request changes files inside \`.github/\`.
-
-Changes to GitHub Actions and repository configuration are not allowed through pull requests.
-
-Please remove the \`.github/\` changes and update the pull request.`
+                issue_number: number,
+                body: "Blocked: .github changes are not allowed."
               });
 
               await github.rest.pulls.update({
                 owner,
                 repo,
-                pull_number,
+                pull_number: number,
                 state: "closed"
               });
 
               return;
             }
 
-            let pr;
+            await new Promise(r => setTimeout(r, 5000));
 
-            for (let i = 0; i < 10; i++) {
-              pr = await github.rest.pulls.get({
-                owner,
-                repo,
-                pull_number
-              });
-
-              if (pr.data.mergeable !== null) {
-                break;
-              }
-
-              await new Promise(resolve => setTimeout(resolve, 3000));
-            }
-
-            if (pr.data.mergeable === false) {
-              await github.rest.issues.createComment({
-                owner,
-                repo,
-                issue_number: pull_number,
-                body: `## ❌ Automatic merge failed
-
-This pull request has merge conflicts.
-
-Please update your branch with the latest \`main\`, resolve conflicts, and try again.`
-              });
-
-              await github.rest.pulls.update({
-                owner,
-                repo,
-                pull_number,
-                state: "closed"
-              });
-
-              return;
-            }
+            const pr = await github.rest.pulls.get({
+              owner,
+              repo,
+              pull_number: number
+            });
 
             if (pr.data.mergeable !== true) {
-              core.setFailed("Could not determine merge status.");
               return;
             }
 
-            try {
-              await github.rest.pulls.merge({
-                owner,
-                repo,
-                pull_number,
-                merge_method: "squash"
-              });
+            await github.rest.pulls.merge({
+              owner,
+              repo,
+              pull_number: number,
+              merge_method: "squash"
+            });
 
-              await github.rest.issues.createComment({
-                owner,
-                repo,
-                issue_number: pull_number,
-                body: `## ✅ Pull request merged automatically.`
-              });
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number: number,
+              body: "Merged automatically."
+            });
 
-              const branch = context.payload.pull_request.head.ref;
-
-              await github.rest.repos.deleteBranch({
-                owner,
-                repo,
-                branch
-              });
-
-            } catch (error) {
-              await github.rest.issues.createComment({
-                owner,
-                repo,
-                issue_number: pull_number,
-                body: `## ⚠️ Automatic merge failed
-
-${error.message}`
-              });
-
-              core.setFailed(error.message);
-            }
+            await github.rest.repos.deleteBranch({
+              owner,
+              repo,
+              branch: context.payload.pull_request.head.ref
+            });
