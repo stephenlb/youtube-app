@@ -1,3 +1,4 @@
+import asyncpg
 TABLE="""
     CREATE TABLE IF NOT EXISTS videos
     id TEXT PRIMARY KEY, -- UUID

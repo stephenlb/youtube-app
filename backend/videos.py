@@ -1,3 +1,5 @@
+import database
+
 class Video():
     #id: int = 0
     title: str = ""

@@ -5,7 +5,7 @@ app = FastAPI()
 
 @app.get("/")
 async def read_root():
-    video = videos.Video('asdf')
+    video = videos.Video()
     print(video)
     return {"Hello": "World"}
 
