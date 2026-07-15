@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  datababase:
+    image: postgres:18-alpine
+    environment:
+      - POSTGRES_PASSWORD=youtube
+      - POSTGRES_USER=youtube
+      - POSTGRES_DB=youtube
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data

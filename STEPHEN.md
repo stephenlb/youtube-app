@@ -1,7 +1,24 @@
-# YouTube App
+# We are Building YouTube
+# We are Building YouTube
+# We are Building YouTube
+# We are Building YouTube
+# We are Building YouTube
+
+# Potential Names
+## BlumTube
+
+
+
+
 
 We are building a YouTube App where you can upload videos,
 and viewers can watch your videos.
+
+## Task Order
+ - Database
+     - Postgresql in docker 
+     - docker compose
+     - database.py
 
 ## Watch List
 - Den-noh Coil
