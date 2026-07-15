@@ -16,8 +16,9 @@ and viewers can watch your videos.
 
 ## Task Order
  - Database
-     - Postgresql in docker 
-     - docker compose
+     - ✅ Postgresql in docker 
+     - ✅ docker compose
+     - schema.py
      - database.py
 
 ## Watch List
