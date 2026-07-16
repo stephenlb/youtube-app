@@ -1,4 +1,16 @@
 import database
+import uuid_utils as uuid
+
+SCHEMA="""
+    CREATE TABLE IF NOT EXISTS videos (
+        id TEXT PRIMARY KEY,
+        upload_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        title TEXT DEFAULT '',
+        description TEXT DEFAULT '',
+        views INT DEFAULT 0,
+        likes INT DEFAULT 0
+    );
+"""
 
 INSERT_VIDEO="""
     INSERT INTO videos (
@@ -6,8 +18,18 @@ INSERT_VIDEO="""
         title, description,
         views, likes
     )
-    VALUES (?, NOW(), ?, ?, 0, 0)
+    VALUES (%s, NOW(), %s, %s, 0, 0)
 """
+
+def setup():
+    return database.query(SCHEMA)
+    
+def insert(title: str, description: str):
+    id = str(uuid.uuid7())
+    return database.execute(
+        INSERT_VIDEO,
+        (id, title, description),
+    )
 
 class Video():
     id: str = ""

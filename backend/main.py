@@ -6,11 +6,12 @@ app = FastAPI()
 
 @app.get("/")
 async def root():
-    video = videos.Video()
-    video.id = "akljdflas"
-    video.kljavlksjalkj = "akljdflas"
-    connection = database.setup()
-    print(video)
+    videos.setup()
+    #video = videos.Video()
+    #video.id = "akljdflas"
+    #video.kljavlksjalkj = "akljdflas"
+    #connection = video.setup()
+    videos.insert("Hello", "World")
     return {"Hello": "World"}
 
 ## TODO Upload Videos
