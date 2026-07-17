@@ -10,11 +10,21 @@ async def root():
     videos.insert("Hello", "World")
     return {"Beep": "Boop"}
 
+@app.get("/video")
+async def video(query: str, limit: int = 2):
+    results = videos.search(query, limit)
+    return {"videos": results}
+
 @app.post("/video")
 async def video(body: dict):
+    ## ARyzenCPU - ADD VALIDITION
+    title = body['title']
+    description = body['description']
+    videos.insert(title, description)
     return {
         "status": "success",
-        "body": body,
+        "title": title,
+        "description": description,
     }
 
 ## TODO Upload Videos

@@ -11,17 +11,24 @@ We are building a YouTube App where you can upload videos,
 and viewers can watch your videos.
 
 ## Task Order
+ - Friday 
+    - List videos
+    - Binary of Video
+    - ✅ POST Video Title Description
+    - 
  - Database
      - ✅ Postgresql in docker 
      - ✅ docker compose
-     - schema.py
-     - database.py
+     - ✅ schema.py
+     - ✅ database.py
+     - ✅ vector search indexing
 
 ## Watch List
 - Den-noh Coil
 
 ## Architecture Plan
 - Research Mobile (optional)
+    Flutter
     Capacitor
     Quasar
     Tauri
@@ -56,6 +63,7 @@ and viewers can watch your videos.
 
 ## Authentication / Authorization
 - Clerk Athentication
+- GitHub OAuth
 - JWT Authorization ( ECDH )
 - Better-auth (free)
 - auth0
@@ -73,12 +81,4 @@ and viewers can watch your videos.
 - Grafana
 - Statsd / Prometheus
 - PostHog
-
-## Find Job
-
- - What is your target career - ??? Software engineer? <-- +10 year applying
- - How much expereince do you have???? - 0 ZERO
- - But then how I get job????
- - apply adjacent roles ( project manager / Product Manager / support / )V
-
 

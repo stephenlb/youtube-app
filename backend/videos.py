@@ -21,6 +21,14 @@ INSERT_VIDEO="""
     VALUES (%s, NOW(), %s, %s, 0, 0)
 """
 
+QUERY_VIDEOS="""
+    SELECT *
+    FROM videos
+    WHERE title ILIKE %s
+    OR description ILIKE %s
+    LIMIT %s
+"""
+
 def setup():
     return database.query(SCHEMA)
     
@@ -32,19 +40,22 @@ def insert(title: str, description: str):
     )
 
 #@dataclass
-class Video():
-    id: str = ""
-    upload_date: int = 0
-    title: str = ""
-    description: str = ""
-    views: int = 0
-    likes: int = 0
+#class Video():
+#    id: str = ""
+#    upload_date: int = 0
+#    title: str = ""
+#    description: str = ""
+#    views: int = 0
+#    likes: int = 0
 
 async def fetch(video_id: int):
     pass
 
-async def search(term: str):
-    pass
+def search(query: str, limit: int = 1):
+    return database.query(
+        QUERY_VIDEOS,
+        (query, query, limit),
+    )
 
 async def upload():
     pass
