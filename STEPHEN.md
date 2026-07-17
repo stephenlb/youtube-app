@@ -4,6 +4,25 @@
 # We are Building YouTube
 # We are Building YouTube
 
+## Backend Stacks Used Heavily in The Field of Software Engineering
+1. Node / TypeScrpt / NextJs
+2. Python / FastAPI / Uvicorn
+3. Golang
+4. Rust Axum
+
+## Front End
+Javascript/TypeScript
+CSS
+HTML
+ReactJS + Redux(StateManagement)
+
+## Databases
+SQLITE
+REDIS
+POSTGESQL
+MEMCACHED
+DUCKDB
+
 # Potential Names
 ## BlumTube
 
@@ -12,9 +31,10 @@ and viewers can watch your videos.
 
 ## Task Order
  - Friday 
-    - List videos
-    - Binary of Video
+    - ✅ List videos
     - ✅ POST Video Title Description
+ - Saturday
+    - Binary of Video
     - 
  - Database
      - ✅ Postgresql in docker 

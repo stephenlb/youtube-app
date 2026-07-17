@@ -57,5 +57,24 @@ def search(query: str, limit: int = 1):
         (query, query, limit),
     )
 
+def upload():
+    """
+    import boto3
+    from fastapi import FastAPI, File, UploadFile
+
+    app = FastAPI()
+    s3 = boto3.client('s3')
+
+    BUCKET_NAME = "your-s3-bucket-name"
+
+    @app.post("/upload-to-s3/")
+    async def upload_video_to_s3(file: UploadFile = File(...)):
+	# Stream the file directly from memory/temp disk to AWS S3
+	s3.upload_fileobj(file.file, BUCKET_NAME, file.filename)
+	
+	return {"message": f"Successfully uploaded {file.filename} to S3!"}
+    
+    """
+
 async def upload():
     pass
