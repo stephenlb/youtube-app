@@ -25,6 +25,8 @@ DUCKDB
 
 # Potential Names
 ## CodeTube
+## StephenTube
+## BlumTube
 
 We are building a YouTube App where you can upload videos,
 and viewers can watch your videos.
