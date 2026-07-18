@@ -24,7 +24,7 @@ MEMCACHED
 DUCKDB
 
 # Potential Names
-## BlumTube
+## CodeTube
 
 We are building a YouTube App where you can upload videos,
 and viewers can watch your videos.
@@ -76,6 +76,7 @@ and viewers can watch your videos.
 - Docker/Podman containers 
 - FFMpeg for Video Processing
 - MediaMTX - RTMP and Video serving (optional)
+- Github authentication for uploading videos
 
 ## Analytics
 - Trino
