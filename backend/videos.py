@@ -61,11 +61,11 @@ def search(query: str, limit: int = 1):
 
 UPLOAD_DIRECTORY = Path('data/videos')
 def upload(video_id: str, file: UploadFile):
-    filename = UPLOAD_DIRECTORY / f'{video_id}.mp4'
+    pwd = Path(__file__).parent.parent
+    filename = pwd / UPLOAD_DIRECTORY / f'{video_id}.mp4'
 
-    #with open(filename, 'wb') as handle:
-    #    #shutil.copyfileobj(file.file, handle)
-    #    pass
+    with open(filename, 'wb') as handle:
+       shutil.copyfileobj(file.file, handle)
 
     return filename, file.filename
 

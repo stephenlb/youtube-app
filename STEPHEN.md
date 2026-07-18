@@ -6,7 +6,7 @@
 
 ## Backend Stacks Used Heavily in The Field of Software Engineering
 1. Node / TypeScrpt / NextJs
-2. Python / FastAPI / Uvicorn
+2. Python / FastAPI / Uvicorn / PostgreSQL
 3. Golang
 4. Rust Axum
 
@@ -24,8 +24,6 @@ MEMCACHED
 DUCKDB
 
 # Potential Names
-## CodeTube
-## StephenTube
 ## BlumTube
 
 We are building a YouTube App where you can upload videos,
@@ -87,7 +85,6 @@ Postgresql
 - Docker/Podman containers 
 - FFMpeg for Video Processing
 - MediaMTX - RTMP and Video serving (optional)
-- Github authentication for uploading videos
 
 ## Analytics
 - Trino
