@@ -26,7 +26,7 @@ body {
     flex-direction:column;
     align-items:center;
     justify-content:center;
-    gap:20px;
+    gap:18px;
     font-family:Inter,"Segoe UI",Arial,sans-serif;
     color:white;
     overflow:hidden;
@@ -54,7 +54,7 @@ body::after {
 h1 {
     margin:0;
     padding:clamp(8px,2vw,14px) clamp(16px,4vw,28px);
-    font-size:clamp(1.3rem,3vw,2rem);
+    font-size:clamp(1.2rem,3vw,2rem);
     border:2px solid rgba(255,255,255,.2);
     border-radius:var(--radius);
     background:rgba(0,0,0,.35);
@@ -63,7 +63,7 @@ h1 {
 
 video {
     max-width:calc(100vw - 40px);
-    max-height:calc(100vh - 190px);
+    max-height:calc(100vh - 160px);
     background:#000;
     border:2px solid rgba(255,255,255,.2);
     border-radius:var(--radius);
@@ -71,20 +71,30 @@ video {
     box-shadow:0 20px 50px rgba(0,0,0,.55);
 }
 
+
+/* Dynamic compact controls */
+
 #custom-controls {
-    width:min(90vw,900px);
+    width:min(85vw,700px);
+    height:clamp(42px,5vw,56px);
+
     display:flex;
     align-items:center;
-    gap:clamp(5px,1vw,12px);
-    padding:clamp(8px,1.5vw,14px);
+    gap:clamp(4px,.8vw,10px);
+
+    padding:clamp(5px,.8vw,10px);
+
     background:rgba(0,0,0,.75);
     border-radius:var(--radius);
     backdrop-filter:blur(10px);
 }
 
-button {
-    width:clamp(35px,5vw,50px);
-    height:clamp(35px,5vw,50px);
+
+#custom-controls button {
+    width:clamp(28px,3vw,42px);
+    height:clamp(28px,3vw,42px);
+
+    padding:0;
 
     display:flex;
     align-items:center;
@@ -92,83 +102,120 @@ button {
 
     background:#111;
     color:white;
+
     border:1px solid rgba(255,255,255,.2);
-    border-radius:12px;
+    border-radius:10px;
+
     cursor:pointer;
-    font-size:clamp(14px,2vw,22px);
+    font-size:clamp(12px,1.5vw,18px);
 }
+
 
 #videoSeek {
     flex:1;
+    min-width:40px;
+    height:clamp(3px,.5vw,7px);
 }
+
+
+#speedText {
+    min-width:clamp(25px,4vw,40px);
+    text-align:center;
+    font-size:clamp(11px,1.3vw,15px);
+}
+
 
 #speedContainer {
     position:relative;
 }
 
+
 #speedMenu {
     display:none;
+
     position:absolute;
-    bottom:60px;
     right:0;
+    bottom:calc(100% + 8px);
 
-    padding:12px;
+    width:clamp(100px,15vw,140px);
+
+    padding:10px;
+
     background:#111;
-    border:1px solid rgba(255,255,255,.2);
-    border-radius:14px;
 
-    width:140px;
+    border:1px solid rgba(255,255,255,.2);
+    border-radius:12px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.5);
 }
+
 
 #speedMenu input {
     width:100%;
-    padding:8px;
+    height:clamp(28px,3vw,38px);
+
     background:#000;
     color:white;
+
     border:1px solid rgba(255,255,255,.2);
-    border-radius:10px;
+    border-radius:8px;
+
+    padding:5px;
+
+    font-size:clamp(12px,1.4vw,16px);
 }
 
-#speedText {
-    font-size:14px;
-}
 </style>
-
 </head>
+
 
 <body>
 
+
 <h1>Video Stream Test</h1>
+
 
 <video id="player" autoplay></video>
 
 
 <div id="custom-controls">
 
-    <button id="playButton">▶</button>
+    <button id="playButton">
+        ▶
+    </button>
 
-    <input id="videoSeek" type="range" min="0" value="0" step="0.1">
+
+    <input id="videoSeek"
+           type="range"
+           min="0"
+           value="0"
+           step="0.1">
 
 
     <div id="speedContainer">
 
-        <button id="speedButton" title="Playback speed">
+        <button id="speedButton">
             ◷
         </button>
 
+
         <div id="speedMenu">
-            <input 
-                id="speedInput"
-                type="number"
-                min="0.1"
-                max="99"
-                step="0.1"
-                value="1">
+
+            <input id="speedInput"
+                   type="number"
+                   min="0.1"
+                   max="99"
+                   step="0.1"
+                   value="1">
+
         </div>
 
     </div>
 
-    <span id="speedText">1x</span>
+
+    <span id="speedText">
+        1x
+    </span>
 
 </div>
 
@@ -177,13 +224,17 @@ button {
 <script>
 
 const player = document.getElementById("player");
+
 const seek = document.getElementById("videoSeek");
 
 const playButton = document.getElementById("playButton");
 
 const speedButton = document.getElementById("speedButton");
+
 const speedMenu = document.getElementById("speedMenu");
+
 const speedInput = document.getElementById("speedInput");
+
 const speedText = document.getElementById("speedText");
 
 
@@ -198,18 +249,24 @@ const speedText = document.getElementById("speedText");
 
     try {
 
-        const response = await fetch(
-            `${origin}/video?query=Beep&limit=2`
-        );
+        const response =
+            await fetch(`${origin}/video?query=Beep&limit=2`);
 
-        const videos = await response.json();
+
+        const videos =
+            await response.json();
+
 
         player.src =
-            `${origin}/stream?video_id=${encodeURIComponent(videos.videos[0].id)}`;
+            `${origin}/stream?video_id=${encodeURIComponent(
+                videos.videos[0].id
+            )}`;
 
 
-    } catch(e) {
+    } catch(e){
+
         console.error(e);
+
     }
 
 })();
@@ -258,8 +315,6 @@ seek.addEventListener("input",()=>{
 
 
 
-// Speed dropdown
-
 speedButton.onclick=()=>{
 
     speedMenu.style.display =
@@ -273,28 +328,26 @@ speedButton.onclick=()=>{
 
 speedInput.addEventListener("input",()=>{
 
-    let speed = Number(speedInput.value);
+    let value = Number(speedInput.value);
 
 
-    if(speed < 0.1)
-        speed = 0.1;
+    if(value < 0.1)
+        value = 0.1;
 
 
-    if(speed > 99)
-        speed = 99;
+    if(value > 99)
+        value = 99;
 
 
-    speedInput.value = speed;
+    speedInput.value=value;
 
-    player.playbackRate = speed;
+    player.playbackRate=value;
 
-    speedText.textContent = speed + "x";
+    speedText.textContent=value+"x";
 
 });
 
 
-
-// Keyboard
 
 document.addEventListener("keydown",(e)=>{
 
@@ -314,6 +367,7 @@ document.addEventListener("keydown",(e)=>{
 });
 
 </script>
+
 
 </body>
 </html>
