@@ -10,6 +10,7 @@
 ## List Videos
 #curl -s 'http://0.0.0.0:8000/video?query=hello&limit=2'
 
+## Upload Video
 TITLE="Beep"
 DESCRIPTION="Boop"
 VIDEO_DATA=$(curl -sL -F 'file=@video.mp4' \
@@ -18,5 +19,6 @@ VIDEO_DATA=$(curl -sL -F 'file=@video.mp4' \
 VIDEO_ID=$(echo $VIDEO_DATA | jq -r '.id')
 echo $VIDEO_ID
 
+## Stream Video
 curl -sL "http:/0.0.0.0:8000/stream?video_id=${VIDEO_ID}"
 
