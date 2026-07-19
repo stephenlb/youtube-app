@@ -12,6 +12,11 @@
 
 TITLE="Beep"
 DESCRIPTION="Boop"
-curl -F 'file=@video.mp4' \
-    "http://0.0.0.0:8000/upload?title=${TITLE}&description=${DESCRIPTION}"
+VIDEO_DATA=$(curl -sL -F 'file=@video.mp4' \
+    "http://0.0.0.0:8000/upload?title=${TITLE}&description=${DESCRIPTION}")
+
+VIDEO_ID=$(echo $VIDEO_DATA | jq -r '.id')
+echo $VIDEO_ID
+
+curl -sL "http:/0.0.0.0:8000/stream?video_id=${VIDEO_ID}"
 

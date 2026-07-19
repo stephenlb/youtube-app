@@ -1,21 +1,22 @@
 import os
-import shutil
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI
+from fastapi.responses import StreamingResponse
 
 app = FastAPI()
 
-# Define the target directory to store files
-UPLOAD_DIR = "uploaded_files"
-os.makedirs(UPLOAD_DIR, exist_ok=True)
+VIDEO_PATH = "sample_video.mp4"
+CHUNK_SIZE = 1024 * 1024  # 1MB per chunk
 
-@app.post("/upload/")
-async def save_uploaded_file(file: UploadFile = File(...)):
-    # 1. Create the complete file destination path
-    file_path = os.path.join(UPLOAD_DIR, file.filename)
-    
-    # 2. Open a local file in write-binary mode
-    with open(file_path, "wb") as buffer:
-        # 3. Stream and copy the uploaded file object into the buffer
-        shutil.copyfileobj(file.file, buffer)
-        
-    return {"filename": file.filename, "saved_to": file_path}
+def video_streamer(path: str):
+    """Generator function to yield video chunks."""
+    with open(path, mode="rb") as file_like:
+        while True:
+            chunk = file_like.read(CHUNK_SIZE)
+            if not chunk:
+                break
+            yield chunk
+
+@app.get("/video")
+async def get_video():
+    # Returns the stream with appropriate media type headers
+    return StreamingResponse(video_streamer(VIDEO_PATH), media_type="video/mp4")

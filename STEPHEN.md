@@ -39,9 +39,13 @@ Postgresql
     - ✅ List videos
     - ✅ POST Video Title Description
  - Saturday
-    - Binary of Video
-    - Self-hosting files
+    - ✅ Binary of Video
+    - ✅ Self-hosting files
     - PubNub Files hosting
+ - Sunday
+    - Video view "Download video" / "Stream Video"
+    - Vibe-code Front-end Video Player
+    - https://github.com/video-dev/hls.js/
  - Database
      - ✅ Postgresql in docker 
      - ✅ docker compose

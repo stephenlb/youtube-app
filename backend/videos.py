@@ -5,6 +5,9 @@ from fastapi import UploadFile
 import database
 import uuid_utils as uuid
 
+CHUNK_SIZE = 1024 * 1024  # 1MB per chunk
+PWD = Path(__file__).parent.parent
+
 SCHEMA="""
     CREATE TABLE IF NOT EXISTS videos (
         id TEXT PRIMARY KEY,
@@ -59,17 +62,23 @@ def search(query: str, limit: int = 1):
         (query, query, limit),
     )
 
+def get_video_file(video_id: str):
+    return PWD / UPLOAD_DIRECTORY / f'{video_id}.mp4'
+
+def stream(video_id: str):
+    filename = get_video_file(video_id)
+    with open(filename, mode='rb') as handle:
+        chunk = handle.read(CHUNK_SIZE)
+        while True:
+            if not chunk: break
+            yield chunk
+    
 UPLOAD_DIRECTORY = Path('data/videos')
 def upload(video_id: str, file: UploadFile):
-    pwd = Path(__file__).parent.parent
-    filename = pwd / UPLOAD_DIRECTORY / f'{video_id}.mp4'
+    filename = get_video_file(video_id)
 
     with open(filename, 'wb') as handle:
        shutil.copyfileobj(file.file, handle)
 
     return filename, file.filename
-
-
-
-
 
