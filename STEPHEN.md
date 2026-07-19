@@ -4,6 +4,10 @@
 # We are Building YouTube
 # We are Building YouTube
 
+## Monday Plan
+ - Infinite scroll
+ - Video skipping forward 
+
 ## Backend Stacks Used Heavily in The Field of Software Engineering
 1. Node / TypeScrpt / NextJs
 2. Python / FastAPI / Uvicorn / PostgreSQL
