@@ -335,6 +335,13 @@ const speedText = document.getElementById("speedText");
 
         console.error(error);
 
+        // Backend unreachable — fall back to a preset video from disk.
+        player.src = "../data/videos/019f7674-d289-7eb1-90a9-4d4136739cfb.mp4";
+        document.body.insertAdjacentHTML(
+            "beforeend",
+            `<p style="color:#ffcf80">Backend unavailable — playing preset video.</p>`
+        );
+
     }
 
 })();
@@ -446,7 +453,6 @@ document.addEventListener("keydown",(e)=>{
 });
 
 </script>
-
 
 </body>
 </html>

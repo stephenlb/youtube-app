@@ -7,6 +7,7 @@
 ## Monday Plan
  - Infinite scroll
  - Video skipping forward 
+ - 10x fast forward
 
 ## Backend Stacks Used Heavily in The Field of Software Engineering
 1. Node / TypeScrpt / NextJs
