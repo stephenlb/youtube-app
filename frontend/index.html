@@ -8,7 +8,7 @@
 <style>
 :root {
     color-scheme: dark;
-    --radius: 18px;
+    --radius: 16px;
 }
 
 * {
@@ -16,158 +16,226 @@
 }
 
 html, body {
-    margin:0;
-    width:100%;
-    height:100%;
+    margin: 0;
+    width: 100%;
+    height: 100%;
 }
 
 body {
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:18px;
-    font-family:Inter,"Segoe UI",Arial,sans-serif;
-    color:white;
-    overflow:hidden;
-    position:relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    color: white;
+
+    overflow: hidden;
+    position: relative;
 }
 
 body::before {
-    content:"";
-    position:fixed;
-    inset:0;
-    background:url("background.jpg") center/cover no-repeat;
-    filter:blur(10px);
-    transform:scale(1.08);
-    z-index:-2;
+    content: "";
+    position: fixed;
+    inset: 0;
+
+    background: url("background.jpg") center/cover no-repeat;
+    filter: blur(10px);
+    transform: scale(1.08);
+
+    z-index: -2;
 }
 
 body::after {
-    content:"";
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.1);
-    z-index:-1;
+    content: "";
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0,0,0,.1);
+
+    z-index: -1;
 }
+
 
 h1 {
-    margin:0;
-    padding:clamp(8px,2vw,14px) clamp(16px,4vw,28px);
-    font-size:clamp(1.2rem,3vw,2rem);
-    border:2px solid rgba(255,255,255,.2);
-    border-radius:var(--radius);
-    background:rgba(0,0,0,.35);
-    backdrop-filter:blur(12px);
+    margin: 0;
+
+    padding: 8px 20px;
+
+    font-size: clamp(1rem,2.5vw,1.8rem);
+
+    border: 2px solid rgba(255,255,255,.2);
+    border-radius: var(--radius);
+
+    background: rgba(0,0,0,.35);
+
+    backdrop-filter: blur(12px);
 }
+
+
+
+/* Main video area */
+
+#player-container {
+
+    width: min(92vw, 1200px);
+    height: min(75vh, 800px);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 8px;
+}
+
+
 
 video {
-    max-width:calc(100vw - 40px);
-    max-height:calc(100vh - 160px);
-    background:#000;
-    border:2px solid rgba(255,255,255,.2);
-    border-radius:var(--radius);
-    object-fit:contain;
-    box-shadow:0 20px 50px rgba(0,0,0,.55);
+
+    width: 100%;
+    height: 100%;
+
+    background: #000;
+
+    border: 2px solid rgba(255,255,255,.2);
+    border-radius: var(--radius);
+
+    object-fit: contain;
+
+    box-shadow: 0 20px 50px rgba(0,0,0,.55);
 }
 
 
-/* Dynamic compact controls */
+
+/* Controls */
 
 #custom-controls {
-    width:min(85vw,700px);
-    height:clamp(42px,5vw,56px);
 
-    display:flex;
-    align-items:center;
-    gap:clamp(4px,.8vw,10px);
+    width: 100%;
+    flex-shrink: 0;
 
-    padding:clamp(5px,.8vw,10px);
+    height: 42px;
+    max-height: 42px;
 
-    background:rgba(0,0,0,.75);
-    border-radius:var(--radius);
-    backdrop-filter:blur(10px);
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 5px 8px;
+
+    background: rgba(0,0,0,.75);
+
+    border-radius: var(--radius);
+
+    backdrop-filter: blur(10px);
 }
+
 
 
 #custom-controls button {
-    width:clamp(28px,3vw,42px);
-    height:clamp(28px,3vw,42px);
 
-    padding:0;
+    width: 32px;
+    height: 32px;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    flex-shrink: 0;
 
-    background:#111;
-    color:white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    border:1px solid rgba(255,255,255,.2);
-    border-radius:10px;
+    background: #111;
 
-    cursor:pointer;
-    font-size:clamp(12px,1.5vw,18px);
+    color: white;
+
+    border: 1px solid rgba(255,255,255,.2);
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-size: 14px;
 }
+
 
 
 #videoSeek {
-    flex:1;
-    min-width:40px;
-    height:clamp(3px,.5vw,7px);
+
+    flex: 1;
+
+    min-width: 30px;
+
+    height: 4px;
 }
+
 
 
 #speedText {
-    min-width:clamp(25px,4vw,40px);
-    text-align:center;
-    font-size:clamp(11px,1.3vw,15px);
+
+    min-width: 28px;
+
+    text-align: center;
+
+    font-size: 12px;
 }
+
 
 
 #speedContainer {
-    position:relative;
+
+    position: relative;
+
 }
+
 
 
 #speedMenu {
-    display:none;
 
-    position:absolute;
-    right:0;
-    bottom:calc(100% + 8px);
+    display: none;
 
-    width:clamp(100px,15vw,140px);
+    position: absolute;
 
-    padding:10px;
+    right: 0;
 
-    background:#111;
+    bottom: 40px;
 
-    border:1px solid rgba(255,255,255,.2);
-    border-radius:12px;
+    width: 120px;
 
-    box-shadow:0 10px 30px rgba(0,0,0,.5);
+    padding: 8px;
+
+    background: #111;
+
+    border: 1px solid rgba(255,255,255,.2);
+
+    border-radius: 12px;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,.5);
 }
+
 
 
 #speedMenu input {
-    width:100%;
-    height:clamp(28px,3vw,38px);
 
-    background:#000;
-    color:white;
+    width: 100%;
 
-    border:1px solid rgba(255,255,255,.2);
-    border-radius:8px;
+    height: 30px;
 
-    padding:5px;
+    background: #000;
 
-    font-size:clamp(12px,1.4vw,16px);
+    color: white;
+
+    border: 1px solid rgba(255,255,255,.2);
+
+    border-radius: 8px;
+
+    padding: 5px;
+
 }
 
 </style>
-</head>
 
+</head>
 
 <body>
 
@@ -175,47 +243,50 @@ video {
 <h1>Video Stream Test</h1>
 
 
-<video id="player" autoplay></video>
+<div id="player-container">
+
+    <video id="player" autoplay></video>
 
 
-<div id="custom-controls">
+    <div id="custom-controls">
 
-    <button id="playButton">
-        ▶
-    </button>
+        <button id="playButton">▶</button>
 
 
-    <input id="videoSeek"
-           type="range"
-           min="0"
-           value="0"
-           step="0.1">
+        <input id="videoSeek"
+               type="range"
+               min="0"
+               value="0"
+               step="0.1">
 
 
-    <div id="speedContainer">
+        <div id="speedContainer">
 
-        <button id="speedButton">
-            ◷
-        </button>
+            <button id="speedButton">
+                ◷
+            </button>
 
 
-        <div id="speedMenu">
+            <div id="speedMenu">
 
-            <input id="speedInput"
-                   type="number"
-                   min="0.1"
-                   max="99"
-                   step="0.1"
-                   value="1">
+                <input id="speedInput"
+                       type="number"
+                       min="0.1"
+                       max="99"
+                       step="0.1"
+                       value="1">
+
+            </div>
 
         </div>
 
+
+        <span id="speedText">
+            1x
+        </span>
+
+
     </div>
-
-
-    <span id="speedText">
-        1x
-    </span>
 
 </div>
 
@@ -224,17 +295,14 @@ video {
 <script>
 
 const player = document.getElementById("player");
-
 const seek = document.getElementById("videoSeek");
 
 const playButton = document.getElementById("playButton");
 
 const speedButton = document.getElementById("speedButton");
-
 const speedMenu = document.getElementById("speedMenu");
 
 const speedInput = document.getElementById("speedInput");
-
 const speedText = document.getElementById("speedText");
 
 
@@ -253,19 +321,19 @@ const speedText = document.getElementById("speedText");
             await fetch(`${origin}/video?query=Beep&limit=2`);
 
 
-        const videos =
+        const data =
             await response.json();
 
 
         player.src =
             `${origin}/stream?video_id=${encodeURIComponent(
-                videos.videos[0].id
+                data.videos[0].id
             )}`;
 
 
-    } catch(e){
+    } catch(error) {
 
-        console.error(e);
+        console.error(error);
 
     }
 
@@ -289,33 +357,41 @@ playButton.onclick = togglePlay;
 
 
 player.addEventListener("play",()=>{
-    playButton.textContent="⏸";
+    playButton.textContent = "⏸";
 });
 
 
 player.addEventListener("pause",()=>{
-    playButton.textContent="▶";
+    playButton.textContent = "▶";
 });
 
 
 
 player.addEventListener("loadedmetadata",()=>{
+
     seek.max = player.duration;
+
 });
+
 
 
 player.addEventListener("timeupdate",()=>{
+
     seek.value = player.currentTime;
+
 });
+
 
 
 seek.addEventListener("input",()=>{
+
     player.currentTime = seek.value;
+
 });
 
 
 
-speedButton.onclick=()=>{
+speedButton.onclick = ()=>{
 
     speedMenu.style.display =
         speedMenu.style.display === "block"
@@ -339,11 +415,11 @@ speedInput.addEventListener("input",()=>{
         value = 99;
 
 
-    speedInput.value=value;
+    speedInput.value = value;
 
-    player.playbackRate=value;
+    player.playbackRate = value;
 
-    speedText.textContent=value+"x";
+    speedText.textContent = value + "x";
 
 });
 
@@ -351,17 +427,20 @@ speedInput.addEventListener("input",()=>{
 
 document.addEventListener("keydown",(e)=>{
 
-    if(e.code==="Space"){
+    if(e.code === "Space") {
+
         e.preventDefault();
+
         togglePlay();
+
     }
 
 
-    if(e.key==="ArrowRight")
+    if(e.key === "ArrowRight")
         player.currentTime += 10;
 
 
-    if(e.key==="ArrowLeft")
+    if(e.key === "ArrowLeft")
         player.currentTime -= 10;
 
 });
