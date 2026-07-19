@@ -3,7 +3,7 @@
 
 <script>
 (async () => {
-    const origin = window.location.origin;
+    const origin = window.location.hostname;
     const player = document.getElementById("player");
 
     const response = await fetch(`${origin}/video?query=Beep&limit=2`);
