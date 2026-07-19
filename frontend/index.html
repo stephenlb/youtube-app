@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Stream Test</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Stream Test</title>
 
 <style>
 :root {
@@ -15,8 +15,7 @@
     box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
     margin: 0;
     width: 100%;
     height: 100%;
@@ -27,14 +26,13 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 24px;
+    gap: 20px;
     font-family: Inter, "Segoe UI", Arial, sans-serif;
-    color: #fff;
+    color: white;
     overflow: hidden;
     position: relative;
 }
 
-/* Blurred background */
 body::before {
     content: "";
     position: fixed;
@@ -45,180 +43,189 @@ body::before {
     z-index: -2;
 }
 
-/* Slight dark overlay */
 body::after {
     content: "";
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0,0,0,.1);
     z-index: -1;
 }
 
 h1 {
     margin: 0;
-    padding: 12px 28px;
-    font-size: 2rem;
-    font-weight: 700;
+    padding: clamp(8px,2vw,14px) clamp(16px,4vw,28px);
+    font-size: clamp(1.3rem,3vw,2rem);
     border: 2px solid rgba(255,255,255,.2);
     border-radius: var(--radius);
     background: rgba(0,0,0,.35);
     backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    text-shadow: 0 2px 10px rgba(0,0,0,.6);
 }
 
-/* Auto-scale to fit the window */
 video {
     display: block;
-    width: auto;
-    height: auto;
-    max-width: calc(100vw - 48px);
-    max-height: calc(100vh - 160px);
-    object-fit: contain;
-
-    /* Match the black bars to the video's black */
-    background: #000;
-
+    max-width: calc(100vw - 40px);
+    max-height: calc(100vh - 190px);
+    background: black;
     border: 2px solid rgba(255,255,255,.2);
     border-radius: var(--radius);
-    overflow: hidden;
+    object-fit: contain;
     box-shadow: 0 20px 50px rgba(0,0,0,.55);
 }
-</style>
-<script>
-const player = document.getElementById("player");
 
-document.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowRight") {
-        player.currentTime += 10;
-    }
-
-    if (e.key === "ArrowLeft") {
-        player.currentTime -= 10;
-    }
-});
-</script>
-</head>
-<body>
-
-    <h1>Video Stream Test</h1>
-
-    <video id="player" autoplay controls></video>
-
-    <script>
-        (async () => {
-            const origin =
-                window.location.protocol === "file:"
-                    ? "http://0.0.0.0:8000"
-                    : window.location.origin;
-
-            const player = document.getElementById("player");
-
-            try {
-                const response = await fetch(`${origin}/video?query=Beep&limit=2`);
-
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
-
-                const videos = await response.json();
-
-                if (!videos.videos || videos.videos.length === 0) {
-                    throw new Error("No videos found.");
-                }
-
-                const videoId = videos.videos[0].id;
-
-                player.src = `${origin}/stream?video_id=${encodeURIComponent(videoId)}`;
-
-                console.log("Origin:", origin);
-                console.log(videos);
-            } catch (err) {
-                console.error(err);
-                document.body.insertAdjacentHTML(
-                    "beforeend",
-                    `<p style="color:#ff8080">Error: ${err.message}</p>`
-                );
-            }
-        })();
-    </script>
-<div id="custom-controls">
-    <button onclick="videoSkip(-10)">⏪ 10s</button>
-    <button onclick="videoToggle()">▶ / ⏸</button>
-    <button onclick="videoSkip(10)">10s ⏩</button>
-
-    <input id="videoSeek" type="range" min="0" value="0" step="0.1">
-
-    <input id="videoSpeed" type="number" min="0.1" max="99" step="0.1" value="1">
-    <span>x</span>
-</div>
-
-<style>
 #custom-controls {
-    width: min(90vw, 900px);
+    width: min(90vw,900px);
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px;
-    background: rgba(0,0,0,.7);
-    border-radius: 16px;
+    gap: clamp(5px,1vw,12px);
+    padding: clamp(8px,1.5vw,14px);
+    background: rgba(0,0,0,.75);
+    border-radius: var(--radius);
     backdrop-filter: blur(10px);
 }
 
-#custom-controls button,
-#custom-controls input {
-    background: #111;
-    color: white;
-    border: 1px solid rgba(255,255,255,.2);
-    border-radius: 10px;
-    padding: 8px;
+#custom-controls button {
+    min-width: clamp(35px,5vw,50px);
+    height: clamp(35px,5vw,50px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background:#111;
+    color:white;
+    border:1px solid rgba(255,255,255,.2);
+    border-radius:12px;
+    cursor:pointer;
+    font-size:clamp(14px,2vw,20px);
 }
 
 #videoSeek {
-    flex: 1;
+    flex:1;
+    min-width:50px;
+}
+
+#speedText {
+    min-width:35px;
+    text-align:center;
+    font-size:clamp(12px,2vw,16px);
+}
+
+#speedButton {
+    font-size:22px;
 }
 </style>
+</head>
+
+<body>
+
+<h1>Video Stream Test</h1>
+
+<video id="player" autoplay></video>
+
+<div id="custom-controls">
+    <button onclick="videoSkip(-10)">−10</button>
+    <button onclick="videoToggle()">▶</button>
+    <button onclick="videoSkip(10)">+10</button>
+
+    <input id="videoSeek" type="range" min="0" value="0" step="0.1">
+
+    <button id="speedButton" title="Playback speed">◷</button>
+    <span id="speedText">1x</span>
+</div>
+
 
 <script>
-const video = document.getElementById("player");
+const player = document.getElementById("player");
 const seek = document.getElementById("videoSeek");
-const speed = document.getElementById("videoSpeed");
+const speedButton = document.getElementById("speedButton");
+const speedText = document.getElementById("speedText");
 
-video.controls = false;
+
+(async () => {
+    const origin =
+        window.location.protocol === "file:"
+        ? "http://0.0.0.0:8000"
+        : window.location.origin;
+
+    try {
+        const response = await fetch(`${origin}/video?query=Beep&limit=2`);
+
+        if (!response.ok)
+            throw new Error(`HTTP ${response.status}`);
+
+        const videos = await response.json();
+
+        if (!videos.videos?.length)
+            throw new Error("No videos found");
+
+        player.src =
+            `${origin}/stream?video_id=${encodeURIComponent(videos.videos[0].id)}`;
+
+    } catch(e) {
+        console.error(e);
+    }
+})();
+
 
 function videoSkip(seconds) {
-    video.currentTime += seconds;
+    player.currentTime += seconds;
 }
 
 function videoToggle() {
-    if (video.paused) {
-        video.play();
-    } else {
-        video.pause();
-    }
+    if(player.paused)
+        player.play();
+    else
+        player.pause();
 }
 
-video.addEventListener("loadedmetadata", () => {
-    seek.max = video.duration;
+
+player.addEventListener("loadedmetadata",()=>{
+    seek.max = player.duration;
 });
 
-video.addEventListener("timeupdate", () => {
-    seek.value = video.currentTime;
+
+player.addEventListener("timeupdate",()=>{
+    seek.value = player.currentTime;
 });
 
-seek.addEventListener("input", () => {
-    video.currentTime = seek.value;
+
+seek.addEventListener("input",()=>{
+    player.currentTime = seek.value;
 });
 
-speed.addEventListener("input", () => {
-    let value = Number(speed.value);
 
-    if (value < 0.1) value = 0.1;
-    if (value > 99) value = 99;
+let speeds = [
+    0.1,0.25,0.5,1,
+    1.5,2,2.5,3,
+    5,10,25,50,99
+];
 
-    speed.value = value;
-    video.playbackRate = value;
+let speedIndex = 3;
+
+
+speedButton.onclick = () => {
+    speedIndex++;
+
+    if(speedIndex >= speeds.length)
+        speedIndex = 0;
+
+    player.playbackRate = speeds[speedIndex];
+    speedText.textContent = speeds[speedIndex] + "x";
+};
+
+
+document.addEventListener("keydown",(e)=>{
+
+    if(e.key==="ArrowRight")
+        videoSkip(10);
+
+    if(e.key==="ArrowLeft")
+        videoSkip(-10);
+
+    if(e.code==="Space")
+        videoToggle();
+
 });
 </script>
+
 </body>
 </html>
